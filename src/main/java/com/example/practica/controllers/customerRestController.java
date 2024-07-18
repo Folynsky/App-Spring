@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.practica.model.customer;
@@ -21,8 +24,23 @@ public class customerRestController {
         new customer(4,"Jane Smith", "Alex Perrez", "34534")
     ));
     
-    @GetMapping("clientes")
+    @GetMapping("/clientes")
     public List<customer> getCustomers() {
         return customers;
     }
+    @GetMapping("/clientes/{username}")
+    public customer getCustomer(@PathVariable String username){  
+        for(customer c : customers){
+            if (c.getUsername().equalsIgnoreCase(username)){ 
+                return c;
+            }
+        }
+        return null;
     }
+
+    @PostMapping("/clientes/post")
+    public customer postCustomer(@RequestBody customer customer){
+        customers.add(customer);
+        return customer;
+    }
+}
